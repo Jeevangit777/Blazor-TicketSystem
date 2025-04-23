@@ -1,0 +1,18 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Domain.Entities
+@using Domain.Interfaces
+@layout EmptyLayout
+@using Microsoft.AspNetCore.Identity
+@inject IAccountService accountService;
+@inject SignInManager<User> signInManager;
+@inject NavigationManager navigationManager;
+@page "/logout"
+<h3>Logout</h3>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await signInManager.SignOutAsync();
+        navigationManager.NavigateTo("/login");
+    } 
+}

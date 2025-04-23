@@ -7,6 +7,7 @@ using System;
 using System.ComponentModel;
 using TicketManagementUI.Components;
 using Infrastructure.Services;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args); 
 
@@ -32,6 +33,7 @@ builder.Services.AddDbContext<AppDBContext>(opt => {
 
 
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddMudServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

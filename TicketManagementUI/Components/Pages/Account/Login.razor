@@ -1,48 +1,65 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @using Domain.Entities
 @using Domain.Interfaces
+@layout EmptyLayout
 @using Microsoft.AspNetCore.Identity
+@using Shared
 @inject IAccountService accountService;
-@inject SignInManager<User> signInManager;
 @inject NavigationManager navigationManager;
+@rendermode InteractiveServer
 @page "/login"
 
-<h3>Login</h3>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <EditForm Model="Input" method="post" OnValidSubmit="OnLogin" FormName="Login">
-                <DataAnnotationsValidator />
-                <hr />
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
 
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="Input.Email" class="form-control" aria-required="true" />
-                    <label for="email" class="form-label">Email</label>
-                    <ValidationMessage For="() => Input.Email" class="text-danger" />
-                </div>
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="/assets/img/login-img.jpg" class="img-fluid" alt="Sample image">
+            </div>
 
-                <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="Input.Password" class="form-control" aria-required="true" />
-                    <label for="password" class="form-label">Password</label>
-                    <ValidationMessage For="() => Input.Password" class="text-danger" />
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                    <p class="lead fw-normal mb-0 me-3">Sign in with Email</p>
                 </div>
+                <Alert @ref="alert"/>
+                <EditForm Model="Input" method="post" OnValidSubmit="OnLogin" FormName="Login">
+                    <DataAnnotationsValidator />
+                    <hr />
 
-                <div class="form-floating mb-3">
-                    <InputCheckbox @bind-Value="Input.Remember" />
-                    Remember me
-                </div>
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="Input.Email" class="form-control" aria-required="true" />
+                        <label for="email" class="form-label">Email</label>
+                        <ValidationMessage For="() => Input.Email" class="text-danger" />
+                    </div>
 
-                <div>
-                    <button type="submit" class="w-100 btn btn-lg btn-primary">Login</button>
-                </div>
-            </EditForm>
-        </section>
+                    <div class="form-floating mb-3">
+                        <InputText type="password" @bind-Value="Input.Password" class="form-control" aria-required="true" />
+                        <label for="password" class="form-label">Password</label>
+                        <ValidationMessage For="() => Input.Password" class="text-danger" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <InputCheckbox @bind-Value="Input.Remember" />
+                        Remember me
+                    </div>
+
+                    <div>
+                        <button type="submit" class="w-100 btn btn-lg btn-primary">Login</button>
+                    </div>
+                </EditForm>
+
+            </div>
+
+        </div>
     </div>
-</div>
+</section>
+
+
 
 @code {
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
+    private Alert alert;
 
     // protected override async Task OnInitializedAsync()
     // {
@@ -60,10 +77,11 @@
         if (!verify.IsSuccess)
         {
             //Alert
+            alert.ShowFailure(verify.ErrorMessage);
             return;
         }
-        await signInManager.PasswordSignInAsync(verify.Value, Input.Password, Input.Remember, false);
-        navigationManager.NavigateTo("/");
+        // await signInManager.PasswordSignInAsync(verify.Value, Input.Password, Input.Remember, false);
+        navigationManager.NavigateTo($"/processor/{verify.Value}/{Input.Password}/{Input.Remember}");
     }
 
     private sealed class InputModel
