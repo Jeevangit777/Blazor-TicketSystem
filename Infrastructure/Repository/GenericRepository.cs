@@ -1,4 +1,5 @@
 ﻿using Domain.Repositories;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,8 +12,8 @@ namespace Infrastructure.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        internal readonly IdentityDbContext dbContext;
-        public GenericRepository(IdentityDbContext dbContext)
+        internal readonly AppDBContext dbContext;
+        public GenericRepository(AppDBContext dbContext)
         {
             this.dbContext = dbContext;
         }

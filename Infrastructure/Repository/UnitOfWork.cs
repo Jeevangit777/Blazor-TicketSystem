@@ -1,4 +1,5 @@
 ﻿using Domain.Repositories;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
 using System.Collections;
@@ -11,12 +12,15 @@ namespace Infrastructure.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly IdentityDbContext context;
+        private readonly AppDBContext context;
         private Hashtable repositories;
 
-        public UnitOfWork(IdentityDbContext context)
+        public ITicketRepository TicketRepository { get; }
+
+        public UnitOfWork(AppDBContext context, ITicketRepository ticketRepository)
         {
             this.context = context;
+            TicketRepository = ticketRepository;
         }
 
         public async Task<int> SaveChanges()

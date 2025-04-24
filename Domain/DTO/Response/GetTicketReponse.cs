@@ -6,7 +6,35 @@ using System.Threading.Tasks;
 
 namespace Domain.DTO.Response
 {
-    internal class GetTicketReponse
+    public class GetTicketResponse
     {
+        public int TicketID { get; set; }
+
+        public string TicketIdView
+        {
+            get
+            {
+                return "T" + TicketID.ToString().PadLeft(4, '0');
+            }
+        }
+
+        public string Summary { get; set; }
+        public string Description { get; set; }
+
+        public int ProductId { get; set; }
+        public string Product { get; set; }
+
+        public int CategoryId { get; set; }
+        public string Category { get; set; }
+
+        public int PriorityId { get; set; }
+        public string Priority { get; set; }
+
+        public string Status { get; set; }
+
+        public string RaisedBy { get; set; }
+
+        public DateTime ExpectedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

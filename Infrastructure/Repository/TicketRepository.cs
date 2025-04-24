@@ -8,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Data;
 
 namespace Infrastructure.Repository
 {
     public class TicketRepository : GenericRepository<Ticket>, ITicketRepository
     {
-        public TicketRepository(IdentityDbContext dbContext) : base(dbContext)
+        public TicketRepository(AppDBContext dbContext) : base(dbContext)
         {
         }
 
