@@ -6,7 +6,9 @@
 @using Shared
 @inject IAccountService accountService;
 @inject NavigationManager navigationManager;
+@inject EncryptionHelper<LoginDTO> encrypt;
 @rendermode InteractiveServer
+
 @page "/login"
 
 <section class="vh-100">
@@ -80,8 +82,17 @@
             alert.ShowFailure(verify.ErrorMessage);
             return;
         }
+        var loginData = new LoginDTO
+            {
+                Username = verify.Value,
+                Password = Input.Password,
+                RememberMe = Input.Remember
+            };
+
+        var payload = encrypt.Encode(loginData);
         // await signInManager.PasswordSignInAsync(verify.Value, Input.Password, Input.Remember, false);
-        navigationManager.NavigateTo($"/processor/{verify.Value}/{Input.Password}/{Input.Remember}");
+        // navigationManager.NavigateTo($"/processor/{verify.Value}/{Input.Password}/{Input.Remember}");
+        navigationManager.NavigateTo($"/processor/{payload}");
     }
 
     private sealed class InputModel

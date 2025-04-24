@@ -8,6 +8,7 @@ using System.ComponentModel;
 using TicketManagementUI.Components;
 using Infrastructure.Services;
 using MudBlazor.Services;
+using TicketManagementUI.Security;
 
 var builder = WebApplication.CreateBuilder(args); 
 
@@ -33,6 +34,9 @@ builder.Services.AddDbContext<AppDBContext>(opt => {
 
 
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ICriteriaService, CriteriaService>();
+
+builder.Services.AddScoped(typeof(EncryptionHelper<>));
 builder.Services.AddMudServices();
 var app = builder.Build();
 

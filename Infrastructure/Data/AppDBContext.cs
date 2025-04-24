@@ -1,6 +1,8 @@
 ﻿using Domain.Entities;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,7 @@ namespace Infrastructure.Data
 
             protected override void OnModelCreating(ModelBuilder builder) {
                 base.OnModelCreating(builder);
+            builder.GenerateSeed();
              
                 // Ticket → User (Many tickets can be raised by one User)
                 builder.Entity<Ticket>()
