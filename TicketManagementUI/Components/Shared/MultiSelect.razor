@@ -1,0 +1,42 @@
+﻿<MudSelect T="string" 
+@ref="ddl"
+Label="@label"
+MultiSelection="true"  
+@bind-SelectedValues="options"
+SelectAll="true"
+SelectAllText="Select All"
+Variant="Variant.Outlined"
+MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))"      
+>
+    @foreach (var element in elements)
+    {
+        <MudSelectItem T="string" Value="@element.Value">@element.Text</MudSelectItem>
+    }
+</MudSelect>
+
+
+
+@code {
+    [Parameter] public string label { get; set; }
+    [Parameter] public List<SelectItem> elements{ get; set; }
+    public IEnumerable<string> options = new HashSet<string> {  };
+    private MudSelect<string> ddl;
+
+    private string GetMultiSelectionText(List<string> selectedValues)
+    {
+        if(selectedValues.Count > 0)
+        {
+            return "Selected";
+        }
+        else
+        {
+            return label;
+        }
+    }
+
+    public void Clear()
+    {
+        ddl.Clear();
+
+    }
+}

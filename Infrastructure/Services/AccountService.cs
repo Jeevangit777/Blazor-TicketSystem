@@ -10,18 +10,32 @@ using System.Text;
 using System.Threading.Tasks;
 using Azure;
 using Infrastructure.Common;
+using Domain.Repositories;
 
 namespace Infrastructure.Services
 {
-    public class AccountService : IAccountService
+    public class AccountService : IAccountService 
     {
         private readonly SignInManager<User> signInManager;
-
-        public AccountService(SignInManager<User> signInManager)
+        private readonly IUnitOfWork unitOfWork;
+        public AccountService(SignInManager<User> signInManager, IUnitOfWork unitOfWork)
         {
             
-this.signInManager = signInManager;
+            this.signInManager = signInManager;
+            this.unitOfWork = unitOfWork;
         }
+
+        public List<GetUserResponse> GetUsers()
+        {
+            return unitOfWork.Repository<User>().ListAll().Select(x => new GetUserResponse
+            {
+                Id = x.Id,
+                Email = x.Email,
+                Avatar = x.Avatar
+            }).ToList();
+
+        }
+
         public async Task<BaseResponse> RegisterUser(RegisterUserRequest request)
         {
             User user = new User
